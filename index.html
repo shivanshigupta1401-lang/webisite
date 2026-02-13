@@ -5,45 +5,107 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Seva Foundation – Service to Humanity</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
       line-height: 1.6;
       color: #333;
+      scroll-behavior: smooth;
+      animation: fadeIn 0.8s ease-in;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     header {
       background: #f57c00;
       color: white;
-      padding: 1.5rem;
-      text-align: center;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
+
+    header img {
+      height: 42px;
+      width: 42px;
+      object-fit: cover;
+      background: white;
+      padding: 4px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
     nav {
       background: #333;
       padding: 0.7rem 2rem;
       text-align: right;
+      position: sticky;
+      top: 80px;
+      z-index: 999;
     }
+
     nav a {
       color: white;
       margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
+      position: relative;
     }
-    nav a:hover {
-      text-decoration: underline;
+
+    nav a:hover { text-decoration: underline; }
+
+    .dropdown {
+      display: inline-block;
+      position: relative;
     }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: white;
+      min-width: 220px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      border-radius: 6px;
+      text-align: left;
+      animation: dropdownFade 0.3s ease;
+    }
+
+    @keyframes dropdownFade {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-content a {
+      color: #333;
+      padding: 10px 15px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover { background: #fff3e0; }
+
+    .dropdown:hover .dropdown-content { display: block; }
+
     section {
       padding: 2rem;
       max-width: 1100px;
       margin: auto;
+      animation: fadeIn 0.8s ease-in;
     }
+
     .hero {
-      background: #fff3e0;
       text-align: center;
       padding: 3rem 2rem;
-    }
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      background: linear-gradient(rgba(255,243,224,0.9), rgba(255,243,224,0.9)),
+                  url('https://images.unsplash.com/photo-1600959907703-125ba1374c7c');
+      background-size: cover;
     }
     .cta {
       display: inline-block;
@@ -53,18 +115,33 @@
       color: white;
       text-decoration: none;
       border-radius: 4px;
+      transition: 0.3s;
     }
+
+    .cta:hover { background: #e65100; transform: scale(1.05); }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
     }
+
     .card {
       background: #fafafa;
       padding: 1.5rem;
       border-radius: 6px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: 0.3s;
     }
+
+    .card:hover { transform: translateY(-5px); }
+
+    .counter {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #f57c00;
+    }
+
     footer {
       background: #333;
       color: white;
@@ -72,35 +149,138 @@
       padding: 1.5rem;
       margin-top: 2rem;
     }
-    footer a {
-      color: #ffcc80;
+
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 50px;
       text-decoration: none;
+      font-weight: bold;
     }
+
+    .reports, .admin {
+      background: #fff3e0;
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+
+    .lang-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: white;
+      padding: 6px 10px;
+      border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-size: 14px;
+    }
+
   </style>
 </head>
 <body>
 
-<header style="display:flex; align-items:center; gap:15px; padding:1rem 2rem;">
-  <img src="https://static.vecteezy.com/system/resources/thumbnails/019/838/622/small/ngo-letter-logo-design-on-white-background-ngo-creative-circle-letter-logo-concept-ngo-letter-design-vector.jpg"
-" alt="Seva Foundation Logo" style="height:20px
+<div class="lang-toggle">🌍 EN | हिंदी</div>
+
+<header>
+  <img src="https://thumbs.dreamstime.com/b/minimalist-ngo-logo-design-featuring-people-tree-globe-clean-promoting-social-justice-321640919.jpg
+
+">
   <div>
-    <h1 style="margin:0;">Seva Foundation</h1>
-    <p style="margin:0;">Service to Humanity, Empowering Communities</p>
+    <h2 style="margin:0;">Seva Foundation</h2>
+    <p style="margin:0; font-size:14px;">Service to Humanity</p>
   </div>
 </header>
 
 <nav>
-  <a href="#about">About</a>
-  <a href="#projects">Our Work</a>
-  <a href="#involved">Get Involved</a>
-  <a href="#donate">Donate</a>
-  <a href="#stories">Impact</a>
+  <div class="dropdown">
+    <a href="#home">Home ▾</a>
+    <div class="dropdown-content">
+      <a href="#home">Home</a>
+      <a href="#mission">Mission Highlights</a>
+      <a href="#education">Education Programs</a>
+      <a href="#healthcare">Healthcare Services</a>
+      <a href="#achievements">Success Stories</a>
+      <a href="#contact">Quick Contact</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+  <a href="#about">About ▾</a>
+  <div class="dropdown-content">
+    <a href="#about">About Us</a>
+    <a href="#strengths">Our Strengths</a>
+    <a href="#mission">Mission & Vision & Objective</a>
+    <a href="#team">Our Team</a>
+    <a href="#certifications">Certifications</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#academic-credits">Transforming Academic Credits</a>
+
+  </div>
+</div>
+
+  <div class="dropdown">
+    <a href="#projects">Our Work ▾</a>
+    <div class="dropdown-content">
+      <a href="#projects">Projects Overview</a>
+      <a href="#education">Education</a>
+      <a href="#healthcare">Healthcare</a>
+      <a href="#community">Community Development</a>
+      <a href="#gallery">Gallery</a>
+    </div>
+  </div>
+
+  <!-- NEW INSIGHTS DROPDOWN -->
+  <div class="dropdown">
+    <a href="#insights">Insights ▾</a>
+    <div class="dropdown-content">
+      <a href="#insights">Blog</a>
+      <a href="#insights">Celebrations</a>
+      <a href="#insights">Affection Homes</a>
+      <a href="#insights">Donations</a>
+      <a href="#education">Education</a>
+      <a href="#healthcare">Health</a>
+      <a href="#insights">Empowerment</a>
+      <a href="#insights">Inaugurations</a>
+      <a href="#insights">Meetings</a>
+      <a href="#insights">News & Stories</a>
+      <a href="#insights">Events</a>
+      <a href="#insights">News</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+  <a href="#reports">Reports ▾</a>
+  <div class="dropdown-content">
+    <a href="#annual">Annual Reports</a>
+    <a href="#financial">Financial Statements</a>
+    <a href="#impact">Impact Assessment</a>
+    <a href="#audit">Audit Documents</a>
+    <a href="#transparency">Transparency Policy</a>
+  </div>
+</div>
+
+  <div class="dropdown">
+  <a href="#donate">Donate ▾</a>
+  <div class="dropdown-content">
+    <a href="#make-donation">Make a Donation</a>
+    <a href="#sponsor-child">Sponsor a Child</a>
+    <a href="#support-healthcare">Support Healthcare</a>
+    <a href="#csr-giving">Corporate / CSR Giving</a>
+    <a href="#donation-faq">Donation FAQ</a>
+  </div>
+</div>
+
+
   <a href="#contact">Contact</a>
 </nav>
 
-<section class="hero" style="background: linear-gradient(rgba(255,243,224,0.9), rgba(255,243,224,0.9)), url('https://images.unsplash.com/photo-1600959907703-125ba1374c7c'); background-size: cover; background-position: center;">
+<section class="hero" id="home">
   <h1>Together, We Can Create Lasting Change</h1>
-  <p>We work at the grassroots level to uplift underprivileged communities through education, healthcare, and social development.</p>
+  <p>Empowering communities through education & healthcare.</p>
   <a href="#donate" class="cta">Donate Now</a>
 </section>
 
@@ -108,95 +288,592 @@
   <h2>About Us</h2>
   <div class="grid">
     <div>
-      <p>Seva Foundation is a non-profit organization dedicated to serving society through selfless service. Inspired by values of compassion, integrity, and inclusiveness, we work across multiple regions to bring sustainable change.</p>
-      <p>Our initiatives focus on long-term empowerment rather than short-term relief.</p>
+      <p>
+        Seva Foundation is a non-profit organization dedicated to serving society 
+        through compassion-driven initiatives in education, healthcare, and 
+        community development.
+      </p>
+      <p>
+        We believe in sustainable empowerment, transparency, and inclusive growth. 
+        Our programs aim to create long-term positive change at the grassroots level.
+      </p>
     </div>
-    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d" alt="Community service" style="width:100%; border-radius:8px;">
+    <img 
+      src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800"
+      alt="Community support"
+      style="width:100%; border-radius:8px;"
+    >
   </div>
 </section>
 
-<section id="projects">
-  <h2>Our Work</h2>
-  <div class="grid">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1588075592446-2f9f8c3a2c8b" alt="Education support" style="width:100%; border-radius:6px; margin-bottom:10px;">
-      <h3>Education</h3>
-      <p>Supporting children with access to quality education, learning materials, and mentorship.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1580281657527-47f249e8f7e5" alt="Healthcare camps" style="width:100%; border-radius:6px; margin-bottom:10px;">
-      <h3>Healthcare</h3>
-      <p>Medical camps, preventive healthcare, and nutrition support for vulnerable communities.</p>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433" alt="Community development" style="width:100%; border-radius:6px; margin-bottom:10px;">
-      <h3>Community Development</h3>
-      <p>Livelihood training, women empowerment, and rural development initiatives.</p>
-    </div>
+<!-- ✅ BUILDING BLOCKS SLIDE -->
+<section id="building-blocks">
+  <h2 style="text-align:center;">Building Blocks of Man-Making Process</h2>
+
+  <div style="max-width:1000px; margin:auto;">
+    <img 
+      src="building-blocks.JPG"
+      alt="Building Blocks of Man-Making Process"
+      style="width:100%; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.2);"
+    >
   </div>
 </section>
 
-<section id="involved">
-  <h2>Get Involved</h2>
+
+<section id="strengths">
+  <h2>🌟 Our Strengths</h2>
+
   <div class="grid">
-    <div>
-      <p>You can support our mission by volunteering your time, skills, or resources.</p>
-      <ul>
-        <li>Volunteer in field projects</li>
-        <li>Support online and skill-based initiatives</li>
-        <li>Partner with us through CSR programs</li>
-      </ul>
+
+    <div class="card">
+      <h3>🧘 Yoga</h3>
+      <p>Promoting physical well-being, discipline, and inner balance through structured yoga sessions.</p>
     </div>
-    <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e" alt="Volunteering together" style="width:100%; border-radius:8px;">
+
+    <div class="card">
+      <h3>🕊 Meditation</h3>
+      <p>Encouraging mindfulness, emotional stability, and mental clarity for holistic development.</p>
+    </div>
+
+    <div class="card">
+      <h3>💎 Value Ethics</h3>
+      <p>Instilling integrity, compassion, social responsibility, and moral leadership.</p>
+    </div>
+
+    <div class="card">
+      <h3>🚀 Entrepreneurship & Employability</h3>
+      <p>Skill-building programs that empower individuals for self-reliance and career opportunities.</p>
+    </div>
+
+    <div class="card">
+      <h3>🤝 Soft Skills</h3>
+      <p>Enhancing confidence, leadership, teamwork, and professional behavior.</p>
+    </div>
+
+    <div class="card">
+      <h3>🗣 Communications & Language Skills</h3>
+      <p>Improving verbal, written, and interpersonal communication for personal & professional growth.</p>
+    </div>
+
+    <div class="card">
+      <h3>💻 Basic Computer Knowledge</h3>
+      <p>Digital literacy training to bridge the technology gap and expand opportunities.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧠 Psychological Counseling</h3>
+      <p>Providing emotional support, mental wellness guidance, and personal resilience building.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="mission">
+  <h2>Mission & Vision & Objective</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>🌱 Our Mission</h3>
+      <p>To uplift underprivileged communities through sustainable development initiatives.</p>
+    </div>
+    <div class="card">
+      <h3>✨ Our Vision</h3>
+      <p>A society where every individual has access to education, healthcare, and dignity.</p>
+    </div>
+<div class="card">
+      <h3>🌟 Our Objective</h3>
+      <p>To address the sustainable development goal(SDG) of No Poverty, Quality of Education, Gender Inequality and also to Generate Social Equity.</p>
+    </div>
+
+  </div>
+</section>
+
+<section id="education">
+  <h2>Education Initiatives</h2>
+  <div class="grid">
+    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7" style="width:100%; border-radius:8px;">
+    <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f" style="width:100%; border-radius:8px;">
+  </div>
+</section>
+
+<section id="healthcare">
+  <h2>Healthcare Programs</h2>
+  <div class="grid">
+    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef" style="width:100%; border-radius:8px;">
+    <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8" style="width:100%; border-radius:8px;">
+  </div>
+</section>
+
+<section id="team">
+  <h2>Our Team</h2>
+  <div class="grid">
+    <div class="card"><img src="https://randomuser.me/api/portraits/women/45.jpg" style="width:100%; border-radius:6px;"><p><strong>Ananya Rao</strong><br>Founder</p></div>
+    <div class="card"><img src="https://randomuser.me/api/portraits/men/32.jpg" style="width:100%; border-radius:6px;"><p><strong>Vikram Iyer</strong><br>Program Director</p></div>
+  </div>
+</section>
+
+<section id="certifications">
+  <h2>Certification Details</h2>
+  <div class="grid">
+
+    <img 
+      src="https://tse2.mm.bing.net/th/id/OIP.TGnII2ELMRrdd2eG2hhMIwHaEK?pid=Api&P=0&h=180" 
+      alt="Official certificate document"
+      style="width:100%; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1);"
+    >
+
+    <img 
+      src="https://images.unsplash.com/photo-1562564055-71e051d33c19?w=800" 
+      alt="Certification award"
+      style="width:100%; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1);"
+    >
+
+  </div>
+</section>
+
+<section id="achievements">
+  <h2>Achievements & Awards</h2>
+  <div class="grid">
+    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0" style="width:100%; border-radius:8px;">
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d" style="width:100%; border-radius:8px;">
+  </div>
+</section>
+
+<!-- INSIGHTS SECTIONS -->
+<section id="insights">
+  <h2>Insights & Updates</h2>
+  <p>Stay connected with our activities, events, and stories from the field.</p>
+</section>
+
+<section id="blog">
+  <h2>📝 Blog</h2>
+  <p>Articles, reflections, and updates highlighting community development, social awareness, and volunteer experiences.</p>
+</section>
+
+<section id="celebrations">
+  <h2>🎉 Celebrations</h2>
+  <p>Moments of joy shared with communities — festivals, cultural programs, and special occasions celebrated together.</p>
+</section>
+
+<section id="affection">
+  <h2>🏠 Affection Homes</h2>
+  <p>Supporting children, elderly, and vulnerable individuals through safe shelter, care, nutrition, and emotional support.</p>
+</section>
+
+<section id="donation-insight">
+  <h2>💝 Donations</h2>
+  <p>Transparency updates on how contributions are utilized to create measurable social impact.</p>
+</section>
+
+<section id="education-insight">
+  <h2>🎓 Education</h2>
+  <p>Stories and updates from scholarship programs, digital literacy drives, mentoring sessions, and school support initiatives.</p>
+</section>
+
+<section id="health-insight">
+  <h2>🏥 Health</h2>
+  <p>Insights from medical camps, preventive healthcare awareness, sanitation drives, and nutrition programs.</p>
+</section>
+
+<section id="empowerment">
+  <h2>👩 Empowerment</h2>
+  <p>Women empowerment, skill development, livelihood training, and self-reliance success stories.</p>
+</section>
+
+<section id="inaugurations">
+  <h2>✂ Inaugurations</h2>
+  <p>Launches of new community centers, classrooms, healthcare units, and development initiatives.</p>
+</section>
+
+<section id="meetings">
+  <h2>🤝 Meetings</h2>
+  <p>Collaborations, stakeholder interactions, volunteer orientations, and partner engagements.</p>
+</section>
+
+<section id="news-stories">
+  <h2>📰 News & Stories</h2>
+  <p>Ground-level impact stories, beneficiary testimonials, and major organizational updates.</p>
+</section>
+
+
+<section id="events">
+  <h2>📅 Events</h2>
+  <p>Awareness drives, blood donation camps, educational workshops, and fundraising programs.</p>
+</section>
+
+<section id="news">
+  <h2>🗞 News</h2>
+  <p>Press coverage, announcements, and important updates from Seva Foundation.</p>
+</section>
+
+<!-- ✅ TRANSFORMING ACADEMIC CREDITS -->
+<section id="academic-credits" style="padding:40px 20px; background:#f5f5f5;">
+  <h2 style="text-align:center; margin-bottom:30px;">
+    Transforming Academic Credits
+  </h2>
+
+  <div style="
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+    gap:20px;
+    max-width:1100px;
+    margin:auto;
+  ">
+
+    <div class="card">
+      <h3>27</h3>
+      <p>Batches (till Oct 2025)</p>
+    </div>
+
+    <div class="card">
+      <h3>818</h3>
+      <p>Students Trained</p>
+    </div>
+
+    <div class="card">
+      <h3>92%</h3>
+      <p>Students Placed</p>
+    </div>
+
+    <div class="card">
+      <h3>8%</h3>
+      <p>Pursuing Graduation in Nursing</p>
+    </div>
+
+    <div class="card">
+      <h3>78%</h3>
+      <p>Retained in Job</p>
+    </div>
+
+    <div class="card">
+      <h3>68%</h3>
+      <p>Still in Job (since 2021)</p>
+    </div>
+
+    <div class="card">
+      <h3>114</h3>
+      <p>Hospitals Network Across the State</p>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="reports">
+  <h2>Annual Reports</h2>
+  <div class="reports">
+    <p>📄 2025 Annual Impact Report</p>
+    <p>📄 2024 Financial Transparency Report</p>
   </div>
 </section>
 
 <section id="donate">
-  <h2>Donate</h2>
-  <p>Your contribution helps us reach more lives and expand our impact. All donations are used responsibly and transparently.</p>
-  <a href="#" class="cta">Contribute Now</a>
+  <h2>Donate Securely</h2>
+  <div class="card">
+    <p>Select Payment Method:</p>
+    <button>💳 Razorpay</button>
+    <button>📱 UPI</button>
+    <p style="margin-top:10px;">(Demo Interface)</p>
+  </div>
+</section>
+<section id="make-donation">
+  <h2>💳 Make a Donation</h2>
+  <div class="card">
+    <p>Your generosity powers our mission.</p>
+    <button>💳 Pay via Razorpay</button>
+    <button>📱 Pay via UPI</button>
+  </div>
+</section>
+<section id="sponsor-child">
+  <h2>👶 Sponsor a Child</h2>
+  <p>
+    Support a child’s education, nutrition, and future opportunities.
+  </p>
 </section>
 
-<section id="stories">
-  <h2>Impact Stories</h2>
-  <img src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb" alt="Volunteers working" style="width:100%; border-radius:8px; margin-bottom:20px;">
-  <div class="grid">
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1599059813005-11265ba4b4ce" alt="Child education" style="width:100%; border-radius:6px; margin-bottom:10px;">
-      <p>“With the support of Seva Foundation, my children are now attending school regularly and dreaming of a better future.”</p>
-      <strong>– Beneficiary, Rural Karnataka</strong>
-    </div>
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433" alt="Women empowerment" style="width:100%; border-radius:6px; margin-bottom:10px;">
-      <p>“Volunteering here gave me purpose and the joy of serving society.”</p>
-      <strong>– Volunteer</strong>
-    </div>
+<section id="support-healthcare">
+  <h2>🏥 Support Healthcare</h2>
+  <p>
+    Help fund medical camps, treatments, and preventive healthcare drives.
+  </p>
+</section>
+<section id="csr-giving">
+  <h2>🏢 Corporate / CSR Giving</h2>
+  <p>
+    Collaborate with Seva Foundation through CSR partnerships.
+  </p>
+</section>
+
+<section id="reports">
+  <h2>Reports & Transparency</h2>
+  <p>Access our official organizational reports.</p>
+</section>
+<section id="donation-faq">
+  <h2>❓ Donation FAQ</h2>
+  <p><strong>Is my donation secure?</strong> Yes.</p>
+  <p><strong>Will I get a receipt?</strong> Absolutely.</p>
+</section>
+
+<section id="annual">
+  <h2>📄 Annual Reports</h2>
+  <div class="reports">
+    <p>2025 Annual Impact Report</p>
+    <p>2024 Annual Report</p>
+  </div>
+</section>
+
+<section id="financial">
+  <h2>💰 Financial Statements</h2>
+  <div class="reports">
+    <p>2025 Financial Statement</p>
+    <p>2024 Financial Statement</p>
+  </div>
+</section>
+
+<section id="impact">
+  <h2>📊 Impact Assessment</h2>
+  <div class="reports">
+    <p>Community Impact Study</p>
+    <p>Education Program Outcomes</p>
+  </div>
+</section>
+
+<section id="audit">
+  <h2>🔍 Audit Documents</h2>
+  <div class="reports">
+    <p>2025 Audit Report</p>
+    <p>Compliance Certifications</p>
+  </div>
+</section>
+
+<section id="transparency">
+  <h2>✅ Transparency Policy</h2>
+  <div class="reports">
+    <p>Donation Utilization Policy</p>
+    <p>Governance & Ethics</p>
   </div>
 </section>
 
 <section id="contact">
   <h2>Contact Us</h2>
   <p>Email: info@sevafoundation.org</p>
-  <p>Phone: +91-XXXXXXXXXX</p>
-  <p>Address: India</p>
-</section>
+  <p>Phone: +91-9876543210</p>
+  <p>Address: Seva Foundation, MG Road, Bengaluru, India</p>
 
-<section id="gallery">
-  <h2 style="padding:2rem; text-align:center;">Our Work in Action</h2>
-  <div class="grid" style="padding:0 2rem 2rem;">
-    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d" alt="Community outreach" style="width:100%; border-radius:8px;">
-    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c" alt="Helping hands" style="width:100%; border-radius:8px;">
-    <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53" alt="Rural development" style="width:100%; border-radius:8px;">
-    <img src="https://images.unsplash.com/photo-1607746882042-944635dfe10e" alt="Volunteer teamwork" style="width:100%; border-radius:8px;">
-    <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8" alt="Healthcare camp" style="width:100%; border-radius:8px;">
-    <img src="https://images.unsplash.com/photo-1497493292307-31c376b6e479" alt="Children learning" style="width:100%; border-radius:8px;">
+<!-- ✅ Real Google Map Embed - Bengaluru -->
+<iframe
+  src="https://www.google.com/maps?q=Bengaluru,India&output=embed"
+  width="100%"
+  height="300"
+  style="border:0; border-radius:10px; box-shadow:0 3px 8px rgba(0,0,0,0.2); margin-top:10px;"
+  allowfullscreen=""
+  loading="lazy">
+</iframe>
+ 
+
+<section id="projects">
+  <h2>Projects Overview</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>📘 Education Support</h3>
+      <p>Scholarships, school kits, digital literacy, and mentoring programs.</p>
+    </div>
+    <div class="card">
+      <h3>🏥 Healthcare Access</h3>
+      <p>Medical camps, preventive screenings, awareness & nutrition drives.</p>
+    </div>
+    <div class="card">
+      <h3>🌍 Community Welfare</h3>
+      <p>Livelihood training, sanitation initiatives, and rural development.</p>
+    </div>
   </div>
 </section>
 
+<section id="community">
+  <h2>Community Development</h2>
+  <div class="grid">
+    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac" style="width:100%; border-radius:8px;">
+    <div>
+      <p>
+        Our community programs focus on long-term sustainable development 
+        through skill-building, women empowerment, sanitation awareness, 
+        and grassroots leadership initiatives.
+      </p>
+      <p>
+        We collaborate with local volunteers and partners to ensure 
+        meaningful and measurable social impact.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ✅ GALLERY SECTION – Orphanage -->
+<section id="working">
+  <h2>Our Gallery</h2>
+
+  <div class="grid">
+
+    <img src="girl-1.JPG" style="width:100%; border-radius:8px;">   
+    <img src="girl-2.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-3.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-4.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-5.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-6.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-7.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-8.JPG" style="width:100%; border-radius:8px;">
+    <img src="girl-9.JPG" style="width:100%; border-radius:8px;">
+
+  </div>
+</section>
+
+  <p style="font-size:14px; color:gray;">📍 Click map to open in Google Maps</p>
+</section>
+
+<section class="admin">
+  <h2>🔐 Admin Dashboard (Mockup)</h2>
+  <p>• Manage Donations</p>
+  <p>• Update Projects</p>
+  <p>• View Volunteer Registrations</p>
+</section>
+
+<a href="https://wa.me/919876543210" class="whatsapp">WhatsApp</a>
+
 <footer>
   <p>© 2026 Seva Foundation | Built with compassion</p>
-  <p><a href="#">Privacy Policy</a> | <a href="#">Transparency & Reports</a></p>
 </footer>
+
+<!-- ✅ CHATBOT -->
+<style>
+  .chatbot-button {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    background: #f57c00;
+    color: white;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .chatbot-box {
+    position: fixed;
+    bottom: 160px;
+    right: 20px;
+    width: 320px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    display: none;
+    overflow: hidden;
+    font-size: 14px;
+  }
+
+  .chatbot-header {
+    background: #f57c00;
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+  }
+
+  .chatbot-messages {
+    height: 220px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #fafafa;
+  }
+
+  .chatbot-input {
+    display: flex;
+    border-top: 1px solid #eee;
+  }
+
+  .chatbot-input input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    outline: none;
+  }
+
+  .chatbot-input button {
+    background: #f57c00;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    cursor: pointer;
+  }
+
+  .bot-msg { color: #333; margin: 6px 0; }
+  .user-msg { text-align: right; margin: 6px 0; font-weight: bold; }
+</style>
+
+<div class="chatbot-button" onclick="toggleChat()">💬</div>
+
+<div class="chatbot-box" id="chatbot">
+  <div class="chatbot-header">
+    Seva Foundation Assistant
+  </div>
+  <div class="chatbot-messages" id="chatMessages">
+    <div class="bot-msg">👋 Hello! How can we help you today?</div>
+  </div>
+  <div class="chatbot-input">
+    <input type="text" id="userInput" placeholder="Type your question..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<script>
+  function toggleChat() {
+    const box = document.getElementById("chatbot");
+    box.style.display = box.style.display === "block" ? "none" : "block";
+  }
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const message = input.value.trim();
+    if (message === "") return;
+
+    const chat = document.getElementById("chatMessages");
+    chat.innerHTML += `<div class="user-msg">${message}</div>`;
+
+    const reply = getBotReply(message.toLowerCase());
+    setTimeout(() => {
+      chat.innerHTML += `<div class="bot-msg">${reply}</div>`;
+      chat.scrollTop = chat.scrollHeight;
+    }, 500);
+
+    input.value = "";
+  }
+
+  function getBotReply(msg) {
+    if (msg.includes("donate")) {
+      return "💝 You can donate securely via Razorpay or UPI in our Donate section.";
+    } 
+    else if (msg.includes("volunteer")) {
+      return "🤝 Wonderful! Please visit the Volunteer section to join us.";
+    } 
+    else if (msg.includes("contact")) {
+      return "📞 You can contact us at info@sevafoundation.org or +91-9876543210.";
+    } 
+    else if (msg.includes("education")) {
+      return "🎓 We support scholarships, school kits, and digital learning programs.";
+    } 
+    else if (msg.includes("health")) {
+      return "🏥 We organize medical camps and preventive healthcare initiatives.";
+    } 
+    else if (msg.includes("location") || msg.includes("address")) {
+      return "📍 We are located at MG Road, Bengaluru, India.";
+    } 
+    else {
+      return "😊 Thank you for your question! Our team will be happy to assist you further.";
+    }
+  }
+</script>
 
 </body>
 </html>
